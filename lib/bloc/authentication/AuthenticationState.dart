@@ -1,26 +1,39 @@
-import 'package:equatable/equatable.dart';
+import 'package:mobilelogin/models/user.dart';
 
-abstract class AuthenticationState extends Equatable {}
+abstract class AuthenticationState {}
 
 class AuthenticationUnintialized extends AuthenticationState {
   @override
-  List<Object> get props => throw UnimplementedError();
+  String toString() => 'AuthenticationUnintialized';
 }
 
-class AuthenticationAuthenticated extends AuthenticationState {
+class AuthenticationSucess extends AuthenticationState {
+  User user;
+
+  AuthenticationSucess({this.user});
+
   @override
-  // TODO: implement props
-  List<Object> get props => throw UnimplementedError();
+  String toString() => 'AuthenticationAuthenticated';
 }
 
-class AuthenticationUnauthenticated extends AuthenticationState {
-  @override
-  // TODO: implement props
-  List<Object> get props => throw UnimplementedError();
-}
+// class AuthenticationUnauthenticated extends AuthenticationState {
+//   @override
+//   String toString() => 'AuthenticationUnauthenticated';
+// }
 
 class AuthenticationLoading extends AuthenticationState {
   @override
-  // TODO: implement props
-  List<Object> get props => throw UnimplementedError();
+  String toString() => 'AuthenticationLoading';
+}
+
+class AuthenticationNoNetwork extends AuthenticationState {
+  final String errorMessage;
+
+  AuthenticationNoNetwork({this.errorMessage});
+
+  @override
+  String toString() => 'Authentication No Network';
+
+  // @override
+  // List<Object> get props => [errorMessage];
 }

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobilelogin/bloc/authentication/AuthenticationBloc.dart';
+import 'package:mobilelogin/bloc/authentication/AuthenticationState.dart';
 import 'package:mobilelogin/screens/secondUI.dart';
 
 class FirstUI extends StatefulWidget {
@@ -7,8 +10,9 @@ class FirstUI extends StatefulWidget {
   _FirstUIState createState() => _FirstUIState();
 }
 
+final _formKey = GlobalKey<FormState>();
+
 class _FirstUIState extends State<FirstUI> {
-  final _formKey = GlobalKey<FormState>();
   String dropdownValue = '+60';
   bool autoValid = false;
 
@@ -20,6 +24,7 @@ class _FirstUIState extends State<FirstUI> {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      // Background Image
       body: Container(
         constraints: BoxConstraints.expand(),
         decoration: BoxDecoration(
@@ -31,36 +36,7 @@ class _FirstUIState extends State<FirstUI> {
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              Container(
-                width: MediaQuery.of(context).size.width * 0.5,
-                height: MediaQuery.of(context).size.height * 0.5,
-                alignment: Alignment.center,
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    maxWidth: 150,
-                    maxHeight: 90,
-                  ),
-                  child: RichText(
-                    text: TextSpan(
-                        text: 'lifyn',
-                        style: TextStyle(
-                          fontFamily: 'Ubuntu',
-                          fontWeight: FontWeight.bold,
-                          fontSize: 60,
-                          letterSpacing: 5,
-                        ),
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: 'Living Together',
-                            style: TextStyle(
-                              fontStyle: FontStyle.italic,
-                              fontSize: 10,
-                            ),
-                          ),
-                        ]),
-                  ),
-                ),
-              ),
+              TitleLayout(),
               Container(
                 width: MediaQuery.of(context).size.width * 1,
                 height: MediaQuery.of(context).size.height * 0.7,
@@ -78,7 +54,7 @@ class _FirstUIState extends State<FirstUI> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Padding(
-                        padding: EdgeInsets.fromLTRB(55, 50, 40, 0),
+                        padding: EdgeInsets.fromLTRB(50, 50, 0, 0),
                         child: Text(
                           'Log in to your account',
                           style: TextStyle(
@@ -89,8 +65,8 @@ class _FirstUIState extends State<FirstUI> {
                         ),
                       ),
                       SizedBox(height: 25),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(55, 0, 40, 15),
+                      Container(
+                        padding: EdgeInsets.fromLTRB(50, 0, 0, 10),
                         child: Row(
                           children: <Widget>[
                             // Start Country Code
@@ -122,7 +98,7 @@ class _FirstUIState extends State<FirstUI> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.fromLTRB(55, 0, 40, 8),
+                        padding: EdgeInsets.fromLTRB(50, 0, 0, 10),
                         child: Row(
                           children: <Widget>[
                             // Start Country Code DropDown Button
@@ -151,6 +127,7 @@ class _FirstUIState extends State<FirstUI> {
                             SizedBox(
                               width: 17,
                             ),
+                            // Start Phone No. TextInput Field
                             Container(
                               width: 190,
                               child: TextFormField(
@@ -176,6 +153,7 @@ class _FirstUIState extends State<FirstUI> {
                                 ),
                               ),
                             ),
+                            // Start Phone No. TextInput Field
                           ],
                         ),
                       ),
@@ -184,30 +162,7 @@ class _FirstUIState extends State<FirstUI> {
                         child: ButtonTheme(
                           minWidth: 350,
                           height: 55,
-                          child: RaisedButton(
-                            onPressed: () {
-                              if (_formKey.currentState.validate()) {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => SecondUI()),
-                                );
-                              }
-                            },
-                            child: Text(
-                              'Next',
-                              style: TextStyle(
-                                color: Color(0xFF01B9B4),
-                                fontFamily: 'Ubuntu',
-                                fontSize: 17,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            color: Color(0xFFFFFFFF),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(40),
-                            ),
-                          ),
+                          child: NextButton(),
                         ),
                       ),
                     ],
@@ -222,9 +177,79 @@ class _FirstUIState extends State<FirstUI> {
   }
 }
 
+class NextButton extends StatelessWidget {
+  const NextButton({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return RaisedButton(
+      onPressed: () {
+        if (_formKey.currentState.validate()) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => SecondUI()),
+          );
+        }
+      },
+      child: Text(
+        'Next',
+        style: TextStyle(
+          color: Color(0xFF01B9B4),
+          fontFamily: 'Ubuntu',
+          fontSize: 17,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      color: Color(0xFFFFFFFF),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(40),
+      ),
+    );
+  }
+}
+
 DropdownMenuItem<String> iterateMenuItem(String value) {
   return DropdownMenuItem<String>(
     value: value,
     child: Text(value),
   );
+}
+
+class TitleLayout extends StatelessWidget {
+  const TitleLayout({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.5,
+      height: MediaQuery.of(context).size.height * 0.5,
+      alignment: Alignment.center,
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxWidth: 150,
+          maxHeight: 90,
+        ),
+        child: RichText(
+          text: TextSpan(
+            text: 'lifyn',
+            style: TextStyle(
+              fontFamily: 'Ubuntu',
+              fontWeight: FontWeight.bold,
+              fontSize: 60,
+              letterSpacing: 5,
+            ),
+            children: <TextSpan>[
+              TextSpan(
+                text: 'Living Together',
+                style: TextStyle(
+                  fontStyle: FontStyle.italic,
+                  fontSize: 10,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }
