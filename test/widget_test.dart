@@ -8,7 +8,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:mobilelogin/screens/firstUI.dart';
+import 'package:mobilelogin/screens/first_ui/firstUI.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
